@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-Description: HK2 Implementation Utilities
+Automatic-Module-Name: org.glassfish.hk2.utilities
+Bundle-License: http://www.eclipse.org/legal/epl-2.0, https://www.gnu.
+ org/software/classpath/license.html
+Bundle-SymbolicName: org.glassfish.hk2.utils
+Built-By: jenkins
+Bnd-LastModified: 1646405156647
+Bundle-ManifestVersion: 2
+Bundle-DocURL: http://www.oracle.com
+Bundle-Vendor: Oracle Corporation
+Import-Package: jakarta.annotation;version="[2.0,3)",jakarta.inject;ve
+ rsion="[2.0,3)",jakarta.validation;resolution:=optional;version="[3.0
+ ,4)",jakarta.validation.metadata;resolution:=optional;version="[3.0,4
+ )",javax.xml.namespace,javax.xml.stream,org.glassfish.hk2.utilities.r
+ eflection;version="[3.0,4)",org.glassfish.hk2.utilities.reflection.in
+ ternal;version="[3.0,4)",org.hibernate.validator;resolution:=optional
+ ;version="[7.0,8)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+DynamicImport-Package: *
+Tool: Bnd-5.1.1.202006162103
+Export-Package: org.glassfish.hk2.utilities.cache;version="3.0.3",org.
+ glassfish.hk2.utilities.general;uses:="jakarta.validation,javax.xml.n
+ amespace,javax.xml.stream,org.glassfish.hk2.utilities.cache";version=
+ "3.0.3",org.glassfish.hk2.utilities.reflection;version="3.0.3",org.gl
+ assfish.hk2.utilities.reflection.internal;uses:="org.glassfish.hk2.ut
+ ilities.reflection";version="3.0.3",org.jvnet.hk2.component;version="
+ 3.0.3"
+Bundle-Name: HK2 Implementation Utilities
+Bundle-Version: 3.0.3
+service: foo
+Build-Jdk-Spec: 1.8
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.8.0_202
+
