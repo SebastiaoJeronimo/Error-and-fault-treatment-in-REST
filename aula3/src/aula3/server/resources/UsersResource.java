@@ -1,5 +1,6 @@
 package aula3.server.resources;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,22 +67,91 @@ public class UsersResource implements UsersService {
 			return user;
 		}
 
-	@Override
-	public User updateUser(String name, String pwd, User user) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * 
+	 * @param user user instance
+	 * @returns true if the user is null or has invalid parameters
+	 */
+	private boolean checkIfUserNotViable(User user){
+		return (user == null || user.getName() == null || user.getPwd() == null);
 	}
 
 	@Override
-	public User deleteUser(String name, String pwd) {
-		// TODO Auto-generated method stub
-		return null;
+	public User updateUser(String userId, String password, User user) {
+		Log.info("updateUser : user = " + userId + "; pwd = " + password + " ; user = " + user);
+	
+		//throw new WebApplicationException(Status.NOT_IMPLEMENTED); save this to use when the method is not yet implemented
+
+		if (userId == null || password == null || checkIfUserNotViable(user)){
+			Log.info("UserId or password null or updated User is null or has null parameters.");
+			throw new WebApplicationException(Status.BAD_REQUEST);
+		}
+		
+		//user that was in the server and its goint to be updated
+		var userServer = users.get(userId);
+		
+		// Check if user exists 
+		if( userServer == null ) {
+			Log.info("User does not exist.");
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+		//the password given was not the specified user password
+		if (!password.equals(userServer.getPassword())){ 	//Compare strings with equals
+			Log.info("Wrong User password."); 
+			throw new WebApplicationException(Status.FORBIDDEN);
+		}
+
+		//put in hashMap returns the previous value that is going to be replaced
+		return users.put(userId, user);
 	}
+
+
+	@Override
+	public User deleteUser(String userId, String password) {
+		Log.info("deleteUser : user = " + userId + "; pwd = " + password);
+		//throw new WebApplicationException( Status.NOT_IMPLEMENTED );
+
+		// Check if user is valid
+		if(userId == null || password == null) {
+			Log.info("UserId or password null.");
+			throw new WebApplicationException( Status.BAD_REQUEST );
+		}
+
+		var user = users.get(userId);
+		
+		// Check if user exists 
+		if( user == null ) {
+			Log.info("User does not exist.");
+			throw new WebApplicationException( Status.NOT_FOUND );
+		}
+
+		//the password given was not the specified user password
+		if (!password.equals(user.getPwd())){ 	//Compare strings with equals
+			Log.info("Wrong User password."); 
+			throw new WebApplicationException(Status.FORBIDDEN);
+		}
+
+		return users.remove(userId);
+	}
+
 
 	@Override
 	public List<User> searchUsers(String pattern) {
-		// TODO Auto-generated method stub
-		return null;
+		Log.info("searchUsers : pattern = " + pattern);
+		//throw new WebApplicationException( Status.NOT_IMPLEMENTED );
+		if (pattern == null){
+			Log.info("pattern is null.");
+			throw new WebApplicationException( Status.BAD_REQUEST );
+		}
+		//users that satisfy the pattern given as an argument
+		List<User> patternUsers = new ArrayList<User>();
+		//put the pattern in lowercase because its case insensitive
+		String patternLowCase = pattern.toLowerCase();
+		for( User user : users.values())
+			if (user.getName().toLowerCase().contains(patternLowCase))
+				patternUsers.add(user);
+		//maybe put a log here indicating how much users were found ...
+		return patternUsers;
 	}
 	
 }
